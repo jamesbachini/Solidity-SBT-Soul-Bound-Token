@@ -60,8 +60,13 @@ contract SBT {
         return souls[_soul];
     }
 
-    // Used by 3rd parties and users to store data
+    /**
+     * Profiles are used by 3rd parties and individual users to store data.
+     * Data is stored in a nested mapping relative to msg.sender
+     * By default they can only store data on addresses that have been minted
+     */
     function setProfile(address _soul, Soul memory _soulData) external {
+        require(keccak256(bytes(souls[_soul].identity)) != zeroHash, "Cannot create a profile for a soul that has not been minted");
         soulProfiles[msg.sender][_soul] = _soulData;
     }
 

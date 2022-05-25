@@ -56,6 +56,11 @@ describe('SBT', function () {
     expect(await sbt.hasProfile(user1.address,user2.address)).to.equal(false);
   });
 
+  it('Should mint another soul for user2', async function () {
+    const soul = ['Alice Smith', 'https://github.com', 42, new Date().getTime()];
+    await sbt.mint(user2.address,soul);
+  });
+
   it('3rd party should be able to create a profile', async function () {
     const soul = ['Alice', 'https://google.com', 92, new Date().getTime()];
     await sbt.connect(user1).setProfile(user2.address,soul);
