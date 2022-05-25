@@ -13,4 +13,39 @@ describe('SBT', function () {
     expect(await sbt.name()).to.equal('Test SBT Token');
     expect(await sbt.ticker()).to.equal('SBT');
   });
+
+  it('hasSoul should return false for new query', async function () {
+    expect(await sbt.hasSoul(user1.address)).to.equal(false);
+  });
+
+  it('Should mint a new soul', async function () {
+    const soul = ['James Bachini', 'https://jamesbachini.com', 99, new Date().getTime()];
+    await sbt.mint(user1.address,soul);
+  });
+
+  it('hasSoul should return true', async function () {
+    expect(await sbt.hasSoul(user1.address)).to.equal(true);
+  });
+
+  it('getSoul should return the correct identifier', async function () {
+    const soul = await sbt.getSoul(user1.address);
+    //console.log(soul);
+    expect(soul[0]).to.equal('James Bachini');
+  });
+
+  it('Operator should be able to update soul', async function () {
+    const soul = ['James Bachini', 'https://jamesbachini.com', 80, new Date().getTime()];
+    await sbt.update(user1.address,soul);
+  });
+
+  it('getSoul should return the updated value', async function () {
+    const soul = await sbt.getSoul(user1.address);
+    //console.log(soul);
+    expect(soul[2]).to.equal(80);
+  });
+
+  it('User should be able to delete their data', async function () {
+    await sbt.connect(user1).burn(user1.address);
+  });
+
 });
