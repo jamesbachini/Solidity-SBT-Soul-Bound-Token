@@ -60,24 +60,25 @@ contract SBT {
         return souls[_soul];
     }
 
-    // Used by 3rd parties and individual users to store data
+    // Used by 3rd parties and users to store data
     function setProfile(address _soul, Soul memory _soulData) external {
         soulProfiles[msg.sender][_soul] = _soulData;
     }
 
-    function getProfile(address _soul) external view returns (Soul memory) {
-        return soulProfiles[msg.sender][_soul];
+    function getProfile(address _profiler, address _soul) external view returns (Soul memory) {
+        return soulProfiles[_profiler][_soul];
     }
 
-    function hasProfile(address _soul) external view returns (bool) {
-        if (keccak256(bytes(soulProfiles[msg.sender][_soul].identity)) == zeroHash) {
+    function hasProfile(address _profiler, address _soul) external view returns (bool) {
+        if (keccak256(bytes(soulProfiles[_profiler][_soul].identity)) == zeroHash) {
             return false;
         } else {
             return true;
         }
     }
 
-    function removeProfile(address _soul) external {
-        delete soulProfiles[msg.sender][_soul];
+    function removeProfile(address _profiler, address _soul) external {
+        require(msg.sender == _soul, "Only users have rights to delete their profile data");
+        delete soulProfiles[_profiler][msg.sender];
     }
 }

@@ -4,7 +4,7 @@ const { ethers } = require('hardhat');
 describe('SBT', function () {
 
   before(async () => {
-    [owner,user1] = await ethers.getSigners();
+    [owner,user1,user2] = await ethers.getSigners();
     const SBTContract = await ethers.getContractFactory('SBT');
     sbt = await SBTContract.deploy('Test SBT Token', 'SBT');
   });
@@ -46,6 +46,36 @@ describe('SBT', function () {
 
   it('User should be able to delete their data', async function () {
     await sbt.connect(user1).burn(user1.address);
+  });
+
+  it('hasSoul should return false after delete', async function () {
+    expect(await sbt.hasSoul(user1.address)).to.equal(false);
+  });
+
+  it('hasProfile should return false', async function () {
+    expect(await sbt.hasProfile(user1.address,user2.address)).to.equal(false);
+  });
+
+  it('3rd party should be able to create a profile', async function () {
+    const soul = ['Alice', 'https://google.com', 92, new Date().getTime()];
+    await sbt.connect(user1).setProfile(user2.address,soul);
+  });
+
+  it('getProfile should return profile', async function () {
+    const soul = await sbt.getProfile(user1.address,user2.address);
+    expect(soul[2]).to.equal(92);
+  });
+
+  it('hasProfile should return true', async function () {
+    expect(await sbt.hasProfile(user1.address,user2.address)).to.equal(true);
+  });
+
+  it('User should be able to delete their profiles data', async function () {
+    await sbt.connect(user2).removeProfile(user1.address,user2.address);
+  });
+
+  it('hasProfile should return false after removal', async function () {
+    expect(await sbt.hasProfile(user1.address,user2.address)).to.equal(false);
   });
 
 });

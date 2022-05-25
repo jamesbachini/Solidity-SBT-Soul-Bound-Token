@@ -13,6 +13,8 @@ This opens up a wide range of applications because it lets developers map data t
 
 There is no current ERC standard for SBT's so this is my interpretation.
 
+It allows the contract to associate an address with a structured data set. It also allows 3rd parties to create profile data sets with the same structure. Users have the ability to delete their data.
+
 Unit tests are in tests/
 
 ABI and interface is in helpers/ however note that these will require updating if the data structure in Soul is modified.
