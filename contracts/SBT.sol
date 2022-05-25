@@ -20,6 +20,7 @@ contract SBT {
     }
 
     mapping (address => Soul) private souls;
+    mapping (address => mapping (address => Soul)) soulProfiles;
     string public name;
     string public ticker;
     address public operator;
@@ -57,5 +58,26 @@ contract SBT {
 
     function getSoul(address _soul) external view returns (Soul memory) {
         return souls[_soul];
+    }
+
+    // Used by 3rd parties and individual users to store data
+    function setProfile(address _soul, Soul memory _soulData) external {
+        soulProfiles[msg.sender][_soul] = _soulData;
+    }
+
+    function getProfile(address _soul) external view returns (Soul memory) {
+        return soulProfiles[msg.sender][_soul];
+    }
+
+    function hasProfile(address _soul) external view returns (bool) {
+        if (keccak256(bytes(soulProfiles[msg.sender][_soul].identity)) == zeroHash) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    function removeProfile(address _soul) external {
+        delete soulProfiles[msg.sender][_soul];
     }
 }
