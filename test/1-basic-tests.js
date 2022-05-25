@@ -4,7 +4,7 @@ const { ethers } = require('hardhat');
 describe('SBT', function () {
 
   before(async () => {
-    [owner,user1,user2] = await ethers.getSigners();
+    [owner,user1,user2,user3] = await ethers.getSigners();
     const SBTContract = await ethers.getContractFactory('SBT');
     sbt = await SBTContract.deploy('Test SBT Token', 'SBT');
   });
@@ -75,12 +75,26 @@ describe('SBT', function () {
     expect(await sbt.hasProfile(user1.address,user2.address)).to.equal(true);
   });
 
+  it('listProfiles should return profile addresses', async function () {
+    const profiles = await sbt.listProfiles(user2.address);
+    expect(profiles[0]).to.equal(user1.address);
+  });
+
   it('User should be able to delete their profiles data', async function () {
     await sbt.connect(user2).removeProfile(user1.address,user2.address);
   });
 
   it('hasProfile should return false after removal', async function () {
     expect(await sbt.hasProfile(user1.address,user2.address)).to.equal(false);
+  });
+
+  it('burn should remove all profiles too', async function () {
+    const soul = ['Bob Smith', 'https://ethereum.org', 37, new Date().getTime()];
+    await sbt.mint(user3.address,soul);
+    await sbt.connect(user1).setProfile(user3.address,soul);
+    expect(await sbt.hasProfile(user1.address,user3.address)).to.equal(true);
+    await sbt.connect(user3).burn(user3.address);
+    expect(await sbt.hasProfile(user1.address,user3.address)).to.equal(false);
   });
 
 });

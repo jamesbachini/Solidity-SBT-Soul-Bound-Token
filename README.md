@@ -9,7 +9,7 @@ Soul bound tokens (aka soulbound tokens) have been proposed as a method of alloc
 
 Where as an ERC20 or NFT token can be transferred between users SBT's are static and cannot be moved between accounts.
 
-This opens up a wide range of applications because it lets developers map data to their users in much the same way we use user databases today.
+This opens up a wide range of applications because it lets developers map data to their users in much the same way we rely on user databases today.
 
 There is no current ERC standard for SBT's so this is my interpretation.
 

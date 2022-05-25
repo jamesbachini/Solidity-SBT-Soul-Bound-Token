@@ -21,6 +21,8 @@ contract SBT {
 
     mapping (address => Soul) private souls;
     mapping (address => mapping (address => Soul)) soulProfiles;
+    mapping (address => address[]) private profiles;
+
     string public name;
     string public ticker;
     address public operator;
@@ -41,6 +43,10 @@ contract SBT {
     function burn(address _soul) external {
         require(msg.sender == _soul, "Only users have rights to delete their data");
         delete souls[_soul];
+        for (uint i=0; i<profiles[_soul].length; i++) {
+            address profiler = profiles[_soul][i];
+            delete soulProfiles[profiler][_soul];
+        }
     }
 
     function update(address _soul, Soul memory _soulData) external {
@@ -68,10 +74,15 @@ contract SBT {
     function setProfile(address _soul, Soul memory _soulData) external {
         require(keccak256(bytes(souls[_soul].identity)) != zeroHash, "Cannot create a profile for a soul that has not been minted");
         soulProfiles[msg.sender][_soul] = _soulData;
+        profiles[_soul].push(msg.sender);
     }
 
     function getProfile(address _profiler, address _soul) external view returns (Soul memory) {
         return soulProfiles[_profiler][_soul];
+    }
+
+    function listProfiles(address _soul) external view returns (address[] memory) {
+        return profiles[_soul];
     }
 
     function hasProfile(address _profiler, address _soul) external view returns (bool) {
