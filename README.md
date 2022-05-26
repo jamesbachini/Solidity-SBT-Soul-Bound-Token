@@ -17,3 +17,23 @@ It allows the contract to associate an address with a structured data set. It al
 
 Unit tests are in tests/
 
+## Functions
+
+function mint(address _soul, Soul memory _soulData) external;
+function burn(address _soul) external;
+function update(address _soul, Soul memory _soulData) external;
+function hasSoul(address _soul) external view returns (bool);
+function getSoul(address _soul) external view returns (Soul memory);
+function setProfile(address _soul, Soul memory _soulData) external;
+function getProfile(address _profiler, address _soul) external view returns (Soul memory);
+function listProfiles(address _soul) external view returns (address[] memory);
+function hasProfile(address _profiler, address _soul) external view returns (bool);
+function removeProfile(address _profiler, address _soul) external;
+
+## Events
+
+event Mint(address _soul);
+event Burn(address _soul);
+event Update(address _soul);
+event SetProfile(address _profiler, address _soul);
+event RemoveProfile(address _profiler, address _soul);
