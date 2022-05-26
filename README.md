@@ -1,9 +1,11 @@
 # Soulbound Token Example (SBT in Solidity)
 
-An experiment in Soulbound Tokens (SBT's) following Vitalik's co-authored whitepaper at:
-https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4105763
+### An experiment in Soulbound Tokens (SBT's) 
 
-On a side-note I propose a rename to Non-Transferable Tokens NTT's
+Blog post and video about SBT's here: https://jamesbachini.com/souldbound-token/
+
+Following on from Vitalik's co-authored whitepaper at:
+https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4105763
 
 Soulbound tokens have been proposed as a method of allocating non-transferable data to an ethereum address.
 
