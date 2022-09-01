@@ -59,6 +59,7 @@ contract SBT {
 
     function update(address _soul, Soul memory _soulData) external {
         require(msg.sender == operator, "Only operator can update soul data");
+        require(keccak256(bytes(souls[_soul].identity)) != zeroHash, "Soul does not exist");
         souls[_soul] = _soulData;
         emit Update(_soul);
     }
