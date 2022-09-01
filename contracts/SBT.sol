@@ -48,7 +48,7 @@ contract SBT {
     }
 
     function burn(address _soul) external {
-        require(msg.sender == _soul, "Only users have rights to delete their data");
+        require(msg.sender == _soul || msg.sender == operator, "Only users and issuers have rights to delete their data");
         delete souls[_soul];
         for (uint i=0; i<profiles[_soul].length; i++) {
             address profiler = profiles[_soul][i];
