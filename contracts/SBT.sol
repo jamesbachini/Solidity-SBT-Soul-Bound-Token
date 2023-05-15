@@ -96,7 +96,7 @@ contract SBT {
         return profiles[_soul];
     }
 
-    function hasProfile(address _profiler, address _soul) external view returns (bool) {
+    function hasProfile(address _profiler, address _soul) public view returns (bool) {
         if (keccak256(bytes(soulProfiles[_profiler][_soul].identity)) == zeroHash) {
             return false;
         } else {
@@ -106,6 +106,7 @@ contract SBT {
 
     function removeProfile(address _profiler, address _soul) external {
         require(msg.sender == _soul, "Only users have rights to delete their profile data");
+        require(hasProfile(_profiler, _soul), "Profile does not exist");
         delete soulProfiles[_profiler][msg.sender];
         emit RemoveProfile(_profiler, _soul);
     }
